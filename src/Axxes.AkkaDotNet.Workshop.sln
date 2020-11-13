@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axxes.AkkaDotNet.Workshop.ClusterNode", "Axxes.AkkaDotNet.Workshop.ClusterNode\Axxes.AkkaDotNet.Workshop.ClusterNode.csproj", "{94D8856C-1933-47B8-AC6B-C10CC7547C29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Axxes.AkkaDotNet.Workshop.ClusterNode", "Axxes.AkkaDotNet.Workshop.ClusterNode\Axxes.AkkaDotNet.Workshop.ClusterNode.csproj", "{94D8856C-1933-47B8-AC6B-C10CC7547C29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axxes.AkkaDotNet.Workshop.Shared", "Axxes.AkkaDotNet.Workshop.Shared\Axxes.AkkaDotNet.Workshop.Shared.csproj", "{D69FF5BE-84E6-41C5-8633-EDECCEF8776F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Axxes.AkkaDotNet.Workshop.Shared", "Axxes.AkkaDotNet.Workshop.Shared\Axxes.AkkaDotNet.Workshop.Shared.csproj", "{D69FF5BE-84E6-41C5-8633-EDECCEF8776F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axxes.AkkaDotNet.Workshop.SeedNode", "Axxes.AkkaDotNet.Workshop.SeedNode\Axxes.AkkaDotNet.Workshop.SeedNode.csproj", "{FCE1CBF2-A9E8-493E-A297-57E6C63894F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Axxes.AkkaDotNet.Workshop.SeedNode", "Axxes.AkkaDotNet.Workshop.SeedNode\Axxes.AkkaDotNet.Workshop.SeedNode.csproj", "{FCE1CBF2-A9E8-493E-A297-57E6C63894F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axxes.AkkaDotNet.Workshop.WebPortal", "Axxes.AkkaDotNet.Workshop.WebPortal\Axxes.AkkaDotNet.Workshop.WebPortal.csproj", "{214714FB-ADF4-488B-B155-87AE6E3830CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Axxes.AkkaDotNet.Workshop.WebPortal", "Axxes.AkkaDotNet.Workshop.WebPortal\Axxes.AkkaDotNet.Workshop.WebPortal.csproj", "{214714FB-ADF4-488B-B155-87AE6E3830CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axxes.AkkaDotNet.Workshop.MessageReader", "Axxes.AkkaDotNet.Workshop.MessageReader\Axxes.AkkaDotNet.Workshop.MessageReader.csproj", "{2C803528-D359-449E-9A6F-CA027F1279EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Axxes.AkkaDotNet.Workshop.MessageReader", "Axxes.AkkaDotNet.Workshop.MessageReader\Axxes.AkkaDotNet.Workshop.MessageReader.csproj", "{2C803528-D359-449E-9A6F-CA027F1279EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axxes.AkkaDotNet.Workshop.Tests", "Axxes.AkkaDotNet.Workshop.Tests\Axxes.AkkaDotNet.Workshop.Tests.csproj", "{A94C90AC-BB75-431B-AFB4-52600BF9B6C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{2C803528-D359-449E-9A6F-CA027F1279EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C803528-D359-449E-9A6F-CA027F1279EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C803528-D359-449E-9A6F-CA027F1279EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A94C90AC-BB75-431B-AFB4-52600BF9B6C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A94C90AC-BB75-431B-AFB4-52600BF9B6C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A94C90AC-BB75-431B-AFB4-52600BF9B6C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A94C90AC-BB75-431B-AFB4-52600BF9B6C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

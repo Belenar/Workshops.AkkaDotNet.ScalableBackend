@@ -1,0 +1,9 @@
+system-settings {
+  actorsystem-name: "WorkshopActorSystem"
+}
+
+akka {  
+    loggers = ["Akka.Event.StandardOutLogger"]
+    stdout-loglevel = INFO
+    loglevel = INFO
+}

@@ -3,5 +3,7 @@ system-settings {
 }
 
 akka {  
-    stdout-loglevel = DEBUG
+    loggers = ["Akka.Event.StandardOutLogger"]
+    stdout-loglevel = INFO
+    loglevel = INFO
 }
