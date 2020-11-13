@@ -9,6 +9,7 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Actors.Device
     {
         private readonly Guid _deviceId;
         private IActorRef _normalizationActor;
+        private IActorRef _persistenceActor;
 
         public DeviceActor(Guid deviceId)
         {
@@ -20,7 +21,9 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Actors.Device
 
         private void CreateChildActors()
         {
-            var normalizationProps = ValueNormalizationActor.CreateProps();
+            var persistenceProps = ReadingPersistenceActor.CreateProps(_deviceId);
+            _persistenceActor = Context.ActorOf(persistenceProps, "value-peristence");
+            var normalizationProps = ValueNormalizationActor.CreateProps(_persistenceActor);
             _normalizationActor = Context.ActorOf(normalizationProps, "value-normalization");
         }
 
@@ -31,7 +34,7 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Actors.Device
 
         private void HandleNormalizedMeterReading(NormalizedMeterReading msg)
         {
-            Context.GetLogger().Info($"NormalizedMeterReading handled in DeviceActor {_deviceId}.");
+            _persistenceActor.Tell(msg);
         }
 
         public static Props CreateProps(Guid deviceId)

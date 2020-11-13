@@ -6,7 +6,7 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Helpers
     {
         public static string HistoryConnectionString { get; set; }
 
-        public SqlConnection GetHistoryConnection()
+        public static SqlConnection GetHistoryConnection()
         {
             return new SqlConnection(HistoryConnectionString);
         }
