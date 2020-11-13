@@ -1,9 +1,21 @@
 system-settings {
   actorsystem-name: "WorkshopActorSystem"
+  remote-actorystem: "akka.tcp://WorkshopActorSystem@localhost:8081"
 }
 
 akka {  
     loggers = ["Akka.Event.StandardOutLogger"]
     stdout-loglevel = INFO
     loglevel = INFO
+
+    actor {
+        provider = remote
+    }
+
+    remote {
+        dot-netty.tcp {
+            port = 0 # bound to a dynamic port assigned by the OS
+            hostname = localhost
+        }
+    }
 }

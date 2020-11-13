@@ -88,5 +88,11 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader
 
             return JsonConvert.DeserializeObject<MeterReadingReceived>(data);
         }
+
+        public override async Task StopAsync(CancellationToken cancellationToken)
+        {
+            await _actorSystem.StopAsync(cancellationToken);
+            await base.StopAsync(cancellationToken);
+        }
     }
 }

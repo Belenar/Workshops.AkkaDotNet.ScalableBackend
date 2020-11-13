@@ -1,11 +1,9 @@
-using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Akka.Actor;
 using Akka.Configuration;
 using Axxes.AkkaDotNet.Workshop.ClusterNode.Actors;
-using Axxes.AkkaDotNet.Workshop.Shared.Messages;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -43,18 +41,11 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var deviceId = Guid.NewGuid();
-
             var deviceManagerProps = DeviceManagerActor.CreateProps();
-            var deviceManager = _actorSystem.ActorOf(deviceManagerProps, "devices");
-
-            var deviceConnected = deviceManager.Ask<DeviceConnected>(new ConnectDevice(deviceId));
-            var deviceActor = deviceConnected.Result.DeviceRef;
+            _actorSystem.ActorOf(deviceManagerProps, "devices");
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                deviceActor.Tell(new MeterReadingReceived(deviceId, DateTime.UtcNow, 0.0M));
-
                 //_logger.LogInformation("SeedNodeService running at: {time}", DateTimeOffset.Now);
                 await Task.Delay(1000, stoppingToken);
             }
