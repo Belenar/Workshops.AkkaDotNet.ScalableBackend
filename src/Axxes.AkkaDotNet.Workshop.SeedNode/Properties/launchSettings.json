@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "Axxes.AkkaDotNet.Workshop.SeedNode": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

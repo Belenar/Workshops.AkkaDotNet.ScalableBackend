@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>dotnet-Axxes.AkkaDotNet.Workshop.MessageReader-27EF2BE3-4280-4987-9F56-D642100474A4</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Akka.Cluster" Version="1.4.11" />
+    <PackageReference Include="Microsoft.Azure.EventHubs" Version="4.3.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Actors\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Axxes.AkkaDotNet.Workshop.Shared\Axxes.AkkaDotNet.Workshop.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="akka.hocon">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

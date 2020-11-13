@@ -1,0 +1,158 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #858585;
+}
+
+.box-shadow {
+  box-shadow: 0 0 0.7rem rgba(0, 0, 0, 0.2);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+  background-color: #fff;
+}
+::-moz-selection { 
+  background: #e09f39;
+}
+::selection {
+  background: #e09f39;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
+
+.navbar {
+  background-color: #9b9b9b;
+}
+.footer {
+  background-color: #fafafa;
+}
+
+.form-group--flex {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+}
+.form-group--flex label {
+  width: 40%;
+}
+.form-group--flex .form-input {
+  width: 60%;
+}
+.form-group--flex .form-input > * {
+  color: #495057;
+  width: 100%;
+}
+.form-group--flex .form-input > *:focus,
+select:active, 
+select:hover {  
+  border: 1px solid #e06f27 !important;
+  box-shadow: 0 0 5px 2px #e09f39;
+  transition: all .2s ease-in-out;
+}
+
+.form-group--flex .form-input > input.datepicker {    
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  padding: 6px;
+  outline: none;
+}
+.form-group--flex .form-icon {
+  flex: 0 0 0;
+  margin-right: 1rem;
+}
+.form-group--flex .form-icon svg {
+  fill: #ced4da;
+}
+
+.form-group .form-elements{
+  background-color: #f3f3f3;
+  flex: 1 0 0;
+  padding: 1.2rem;
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+  border-radius: .4rem;
+}
+
+#chart{
+  background-color: #f3f3f3;
+  border-radius: .4rem;
+  padding: 1rem;
+  display: none;
+}
+
+.datepicker td.active {
+  background-color: #e06f27 !important;
+  background-image: none !important;
+}
+.datepicker td.today {
+  color: #e06f27 !important;
+  background-image: none !important;
+  background-color: transparent !important;
+  text-shadow: none !important;
+}
+
+.apexcharts-zoom-icon.apexcharts-selected svg {
+  fill: #e06f27 !important;
+}
+.apexcharts-pan-icon.apexcharts-selected svg {
+  stroke: #e06f27 !important;
+}

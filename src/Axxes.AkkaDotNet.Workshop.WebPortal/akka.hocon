@@ -1,0 +1,7 @@
+system-settings {
+  actorsystem-name: "WorkshopActorSystem"
+}
+
+akka {  
+    stdout-loglevel = DEBUG
+}
