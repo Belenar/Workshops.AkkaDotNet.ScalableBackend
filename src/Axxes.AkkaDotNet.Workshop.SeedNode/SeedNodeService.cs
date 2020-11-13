@@ -4,6 +4,9 @@ using Akka.Actor;
 using Axxes.AkkaDotNet.Workshop.SeedNode.System;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Petabridge.Cmd.Cluster;
+using Petabridge.Cmd.Host;
+using Petabridge.Cmd.Remote;
 
 namespace Axxes.AkkaDotNet.Workshop.SeedNode
 {
@@ -21,6 +24,13 @@ namespace Axxes.AkkaDotNet.Workshop.SeedNode
         {
             await base.StartAsync(cancellationToken);
             _system = SeedNodeSystemFactory.CreateActorSystem();
+
+            var pbm = PetabridgeCmd.Get(_system);
+            // enable Akka.Cluster management commands
+            pbm.RegisterCommandPalette(ClusterCommands.Instance);
+            // enable Akka.Remote management commands
+            pbm.RegisterCommandPalette(RemoteCommands.Instance);
+            pbm.Start();
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)

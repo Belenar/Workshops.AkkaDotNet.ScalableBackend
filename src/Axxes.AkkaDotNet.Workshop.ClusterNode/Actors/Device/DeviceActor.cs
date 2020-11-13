@@ -17,6 +17,8 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Actors.Device
             CreateChildActors();
             Receive<MeterReadingReceived>(HandleMeterReadingReceived);
             Receive<NormalizedMeterReading>(HandleNormalizedMeterReading);
+
+            Context.GetLogger().Info($"DeviceActor created for ID {_deviceId}");
         }
 
         private void CreateChildActors()

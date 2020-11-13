@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Akka.Actor;
 using Akka.Configuration;
+using Akka.Routing;
 using Axxes.AkkaDotNet.Workshop.MessageReader.Actors;
 using Axxes.AkkaDotNet.Workshop.Shared.Messages;
 
@@ -14,6 +15,7 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader.System
     {
         private ActorSystem _actorSystem;
         private Dictionary<Guid, IActorRef> _proxyActors = new Dictionary<Guid, IActorRef>();
+        private IActorRef _devicesRouter;
 
         public ActorSystemService()
         {
@@ -27,6 +29,8 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader.System
             SystemConstants.RemoteSystemAddress = systemConfig.GetString("remote-actorystem");
 
             _actorSystem = ActorSystem.Create(actorSystemName, hoconConfig);
+
+            _devicesRouter = _actorSystem.ActorOf(Props.Empty.WithRouter(FromConfig.Instance), "devices");
         }
 
         public void SendMeasurement(Guid deviceId, MeterReadingReceived message)
@@ -39,7 +43,7 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader.System
 
         private void CreateProxyActor(Guid deviceId)
         {
-            var props = DeviceActorProxy.CreateProps(deviceId);
+            var props = DeviceActorProxy.CreateProps(deviceId, _devicesRouter);
             _proxyActors[deviceId] = _actorSystem.ActorOf(props, $"proxy-{deviceId}");
         }
 

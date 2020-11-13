@@ -1,6 +1,5 @@
 ﻿using System;
 using Akka.Actor;
-using Axxes.AkkaDotNet.Workshop.MessageReader.System;
 using Axxes.AkkaDotNet.Workshop.Shared.Messages;
 
 namespace Axxes.AkkaDotNet.Workshop.MessageReader.Actors
@@ -10,22 +9,21 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader.Actors
         public IStash Stash { get; set; }
 
         private readonly Guid _deviceId;
+        private readonly IActorRef _devicesRouter;
         private IActorRef _deviceActor;
 
-        public DeviceActorProxy(Guid deviceId)
+        public DeviceActorProxy(Guid deviceId, IActorRef devicesRouter)
         {
             _deviceId = deviceId;
+            _devicesRouter = devicesRouter;
             Become(Started);
             
         }
 
         protected override void PreStart()
         {
-            var devicesActorPath = $"{SystemConstants.RemoteSystemAddress}/user/devices";
-            var devicesActor = Context.ActorSelection(devicesActorPath);
-
             var request = new ConnectDevice(_deviceId);
-            devicesActor.Tell(request);
+            _devicesRouter.Tell(request);
         }
 
         private void Started()
@@ -56,9 +54,9 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader.Actors
             _deviceActor.Tell(message);
         }
 
-        public static Props CreateProps(Guid deviceId)
+        public static Props CreateProps(Guid deviceId, IActorRef devicesRouter)
         {
-            return Props.Create<DeviceActorProxy>(deviceId);
+            return Props.Create<DeviceActorProxy>(deviceId, devicesRouter);
         }
     }
 }
