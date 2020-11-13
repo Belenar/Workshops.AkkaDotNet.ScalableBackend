@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Axxes.AkkaDotNet.Workshop.WebPortal.Models;
 using Axxes.AkkaDotNet.Workshop.WebPortal.System;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,6 @@ namespace Axxes.AkkaDotNet.Workshop.WebPortal.Controllers
     [Route("api/[controller]")]
     public class DevicesController : ControllerBase
     {
-        private static IEnumerable<Device> _devices;
-
-        private IEnumerable<Device> Devices => _devices ??= _actorSystem.GetAllDevices();
-
         private readonly IActorSystemService _actorSystem;
 
         public DevicesController(IActorSystemService actorSystem)
@@ -25,9 +22,9 @@ namespace Axxes.AkkaDotNet.Workshop.WebPortal.Controllers
         /// </summary>
         /// <returns>A list of all available devices.</returns>
         [HttpGet]
-        public IEnumerable<Device> Get()
+        public async Task<IEnumerable<Device>> Get()
         {
-            return Devices;
+            return await _actorSystem.GetAllDevices();
         }
     }
 }

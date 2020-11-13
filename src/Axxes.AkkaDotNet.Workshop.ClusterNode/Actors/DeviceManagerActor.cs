@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using Akka.Actor;
 using Axxes.AkkaDotNet.Workshop.ClusterNode.Actors.Device;
 using Axxes.AkkaDotNet.Workshop.Shared.Messages;
@@ -13,6 +15,7 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Actors
         public DeviceManagerActor()
         {
             Receive<ConnectDevice>(HandleConnectDevice);
+            Receive<GetAllDeviceIds>(HandleGetAllDeviceIds);
         }
 
         private void HandleConnectDevice(ConnectDevice request)
@@ -23,6 +26,11 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Actors
             }
             var response = new DeviceConnected(_deviceActors[request.Id]);
             Sender.Tell(response);
+        }
+
+        private void HandleGetAllDeviceIds(GetAllDeviceIds obj)
+        {
+            Sender.Tell(new AllDeviceIds(ImmutableArray.Create(_deviceActors.Keys.ToArray())));
         }
 
         private void CreateDeviceActor(Guid deviceId)
