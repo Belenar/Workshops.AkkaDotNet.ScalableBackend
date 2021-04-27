@@ -44,7 +44,7 @@ You will spend a lot of time coding during this workshop. I will present concept
 
 You will need: 
 * Your .NET IDE of choice (Visual Studio or Rider)
-* .NET Core 3.1 SDK
+* .NET 5 SDK
 * A working SQL server instance (LocalDB will do just fine)
 * A working internet connection
 
