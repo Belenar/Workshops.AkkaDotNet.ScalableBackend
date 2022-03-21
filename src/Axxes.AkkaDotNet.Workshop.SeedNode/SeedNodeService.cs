@@ -29,7 +29,7 @@ namespace Axxes.AkkaDotNet.Workshop.SeedNode
             // enable Akka.Cluster management commands
             pbm.RegisterCommandPalette(ClusterCommands.Instance);
             // enable Akka.Remote management commands
-            pbm.RegisterCommandPalette(RemoteCommands.Instance);
+            pbm.RegisterCommandPalette(new RemoteCommands());
             pbm.Start();
         }
 
