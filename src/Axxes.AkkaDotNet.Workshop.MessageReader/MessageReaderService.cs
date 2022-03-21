@@ -99,6 +99,7 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
             await _eventHubClient.StopProcessingAsync(cancellationToken);
+            await _actorSystem.StopAsync(cancellationToken);
             await base.StopAsync(cancellationToken);
         }
 
@@ -107,12 +108,6 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader
             var data = Encoding.UTF8.GetString(eventData.Body.ToArray());
 
             return JsonConvert.DeserializeObject<MeterReadingReceived>(data);
-        }
-
-        public override async Task StopAsync(CancellationToken cancellationToken)
-        {
-            await _actorSystem.StopAsync(cancellationToken);
-            await base.StopAsync(cancellationToken);
         }
     }
 }
