@@ -7,14 +7,10 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader.IotHub
         public IotHubSettings(IConfiguration configuration)
         {
             var section = configuration.GetSection("IoTHub");
-            EventHubEndpoint = section.GetValue<string>("EventHubEndpoint");
-            EventHubPath = section.GetValue<string>("EventHubPath");
-            SasKeyName = section.GetValue<string>("SasKeyName");
-            SasKey = section.GetValue<string>("SasKey");
+            EventHubConnectionString = section.GetValue<string>("EventHubConnectionString");
+            BlobStorageConnectionString = section.GetValue<string>("BlobStorageConnectionString");
         }
-        public string EventHubEndpoint { get; }
-        public string EventHubPath { get; }
-        public string SasKeyName { get; }
-        public string SasKey { get; }
+        public string EventHubConnectionString { get; }
+        public string BlobStorageConnectionString { get; }
     }
 }
