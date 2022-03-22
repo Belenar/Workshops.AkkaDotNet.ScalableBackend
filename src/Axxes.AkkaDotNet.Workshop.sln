@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Axxes.AkkaDotNet.Workshop.W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Axxes.AkkaDotNet.Workshop.MessageReader", "Axxes.AkkaDotNet.Workshop.MessageReader\Axxes.AkkaDotNet.Workshop.MessageReader.csproj", "{2C803528-D359-449E-9A6F-CA027F1279EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Axxes.AkkaDotNet.Workshop.Tests", "Axxes.AkkaDotNet.Workshop.Tests\Axxes.AkkaDotNet.Workshop.Tests.csproj", "{A94C90AC-BB75-431B-AFB4-52600BF9B6C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Axxes.AkkaDotNet.Workshop.Tests", "Axxes.AkkaDotNet.Workshop.Tests\Axxes.AkkaDotNet.Workshop.Tests.csproj", "{A94C90AC-BB75-431B-AFB4-52600BF9B6C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

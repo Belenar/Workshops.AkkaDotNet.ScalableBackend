@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Akka.Actor;
+using Akka.Cluster;
 using Axxes.AkkaDotNet.Workshop.Shared.Messages;
 
 namespace Axxes.AkkaDotNet.Workshop.WebPortal.Actors
@@ -10,20 +11,22 @@ namespace Axxes.AkkaDotNet.Workshop.WebPortal.Actors
     public class AllDevicesActor : ReceiveActor
     {
         private readonly IActorRef _deviceBroadcastGroup;
-        private Dictionary<Guid, IActorRef> _deviceManagerLocator = new Dictionary<Guid, IActorRef>();
+        private readonly Cluster _cluster = Cluster.Get(Context.System);
+        private readonly Dictionary<Guid, IActorRef> _deviceManagerLocator = new ();
 
         public AllDevicesActor(IActorRef deviceBroadcastGroup)
         {
             _deviceBroadcastGroup = deviceBroadcastGroup;
-            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(30), TimeSpan.FromMinutes(5), Self, new RefreshDeviceActorList(), Self);
 
-            Receive<RefreshDeviceActorList>(HandleRefreshDeviceActorList);
+            Receive<ClusterEvent.MemberUp>(memberUp => memberUp.Member.Address == _cluster.SelfAddress, _ => TriggerDeviceListRefresh());
+            Receive<RefreshDeviceActorList>(_ => TriggerDeviceListRefresh());
+
             Receive<AllDeviceIds>(HandleAllDeviceIds);
             Receive<GetAllDeviceIds>(HandleGetAllDeviceIds);
             Receive<ConnectDevice>(HandleConnectDevice);
         }
 
-        private void HandleRefreshDeviceActorList(RefreshDeviceActorList msg)
+        private void TriggerDeviceListRefresh()
         {
             _deviceBroadcastGroup.Tell(new GetAllDeviceIds());
         }
@@ -49,6 +52,18 @@ namespace Axxes.AkkaDotNet.Workshop.WebPortal.Actors
         public static Props CreateProps(IActorRef deviceBroadcastGroup)
         {
             return Props.Create<AllDevicesActor>(deviceBroadcastGroup);
+        }
+
+        protected override void PreStart()
+        {
+            Context.System.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromMinutes(5), TimeSpan.FromMinutes(5), Self, new RefreshDeviceActorList(), Self);
+            _cluster.Subscribe(Self, typeof(ClusterEvent.MemberUp));
+        }
+
+        protected override void PostStop()
+        {
+            _cluster.Unsubscribe(Self);
+            base.PostStop();
         }
     }
 }
