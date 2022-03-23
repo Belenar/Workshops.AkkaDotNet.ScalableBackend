@@ -1,6 +1,5 @@
 ﻿using System;
 using Akka.Actor;
-using Akka.Event;
 using Axxes.AkkaDotNet.Workshop.Shared.Messages;
 
 namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Actors;
@@ -8,6 +7,7 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Actors;
 internal class DeviceActor : ReceiveActor
 {
     private const string ValueNormalizationName = "value-normaization";
+    private const string ValueStorageName = "value-storage";
     private readonly Guid _deviceId;
 
     public DeviceActor(Guid deviceId)
@@ -21,18 +21,22 @@ internal class DeviceActor : ReceiveActor
     private void CreateChildren()
     {
         // value-normalization
-        var props = ValueNormalizationActor.CreateProps();
-        Context.ActorOf(props, ValueNormalizationName);
+        var normalizationProps = ValueNormalizationActor.CreateProps();
+        Context.ActorOf(normalizationProps, ValueNormalizationName);
+
+        // value-normalization
+        var storageProps = ValueStorageActor.CreateProps(_deviceId);
+        Context.ActorOf(storageProps, ValueStorageName);
     }
 
     private void HandleMeterReadingReceived(MeterReadingReceived message)
     {
-        Context.Child(ValueNormalizationName).Tell(message);
+        Context.Child(ValueNormalizationName).Forward(message);
     }
 
     private void HandleNormalizedMeterReadingReceived(NormalizedMeterReading message)
     {
-        Context.GetLogger().Info($"Device {_deviceId} - Time: {message.Timestamp} - Reading: {message.MeterReading}");
+        Context.Child(ValueStorageName).Forward(message);
     }
 
     public static Props CreateProps(Guid deviceId)

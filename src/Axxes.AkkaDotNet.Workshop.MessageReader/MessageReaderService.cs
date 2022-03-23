@@ -41,7 +41,10 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader
 
                 var consumerGroup = EventHubConsumerClient.DefaultConsumerGroupName;
 
-                _eventHubClient = new EventProcessorClient(storageClient, consumerGroup, _iotHubSettings.EventHubConnectionString);
+                _eventHubClient = new EventProcessorClient(
+                    storageClient, 
+                    consumerGroup, 
+                    _iotHubSettings.EventHubConnectionString);
 
                 _eventHubClient.ProcessEventAsync += ProcessEventAsync;
                 _eventHubClient.ProcessErrorAsync += ProcessErrorAsync;
