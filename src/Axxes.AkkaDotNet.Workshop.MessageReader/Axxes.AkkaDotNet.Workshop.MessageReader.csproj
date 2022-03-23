@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Actors\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Axxes.AkkaDotNet.Workshop.Shared\Axxes.AkkaDotNet.Workshop.Shared.csproj" />
   </ItemGroup>
 

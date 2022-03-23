@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Akka.Actor;
 using Akka.Configuration;
 using Axxes.AkkaDotNet.Workshop.ClusterNode.Actors;
-using Axxes.AkkaDotNet.Workshop.Shared.Messages;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -48,8 +47,6 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode
             // TODO: Create base actors and send some messages to them
             while (!stoppingToken.IsCancellationRequested)
             {
-                //_deviceManager.Tell(new ConnectDevice(Guid.NewGuid()));
-                var response = await _deviceManager.Ask<DeviceConnected>(new ConnectDevice(Guid.NewGuid()));
                 await Task.Delay(1000, stoppingToken);
             }
         }

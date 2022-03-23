@@ -5,4 +5,13 @@ akka {
 	loggers = ["Akka.Event.StandardOutLogger"]
 	stdout-loglevel = INFO
 	loglevel = INFO
+	actor {
+        provider = remote
+    }
+    remote {
+        dot-netty.tcp {
+            port = 8081 #bound to a specific port
+            hostname = localhost
+        }
+    }
 }
