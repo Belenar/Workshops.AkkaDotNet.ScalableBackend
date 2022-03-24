@@ -5,15 +5,26 @@ akka {
 	loggers = ["Akka.Event.StandardOutLogger"]
 	stdout-loglevel = INFO
 	loglevel = INFO
+
 	actor {
-        provider = remote
+        provider = cluster
     }
+
     remote {
         dot-netty.tcp {
-            port = 8081 #bound to a specific port
+            transport-class = "Akka.Remote.Transport.DotNetty.TcpTransport, Akka.Remote"
+            transport-protocol = tcp
+            applied-adapters = []
+            port = 0
             hostname = localhost
         }
     }
+
+    cluster {
+        seed-nodes = ["akka.tcp://WorkshopActorSystem@localhost:8202"]
+        roles = [devicenode]
+    }
+
     persistence {
         journal {
             plugin = "akka.persistence.journal.sql-server"

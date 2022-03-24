@@ -2,6 +2,32 @@ system-settings {
   actorsystem-name: "WorkshopActorSystem"
 }
 
+petabridge.cmd{
+	host = "127.0.0.1"
+	port = 9110
+}
+
 akka {  
-    stdout-loglevel = DEBUG
+    loggers = ["Akka.Event.StandardOutLogger"]
+    stdout-loglevel = INFO
+    loglevel = INFO
+
+    actor {
+        provider = cluster
+    }
+
+    remote {
+        dot-netty.tcp {
+            transport-class = "Akka.Remote.Transport.DotNetty.TcpTransport, Akka.Remote"
+            transport-protocol = tcp
+            applied-adapters = []
+            port = 8202
+            hostname = localhost
+        }
+    }
+
+    cluster {
+        seed-nodes = ["akka.tcp://WorkshopActorSystem@localhost:8202"]
+        roles = [seednode]
+    }
 }
