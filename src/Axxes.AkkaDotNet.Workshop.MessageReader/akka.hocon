@@ -7,6 +7,18 @@ akka {
     	
     actor {
         provider = cluster
+        deployment {
+          /devices {
+            router = consistent-hashing-group
+            routees.paths = ["/user/devices"]
+            cluster {
+                enabled = on
+                max-nr-of-instances-per-node = 1
+                allow-local-routees = off
+                use-role = devicenode
+            }
+          }
+       }
     }
 
     remote {

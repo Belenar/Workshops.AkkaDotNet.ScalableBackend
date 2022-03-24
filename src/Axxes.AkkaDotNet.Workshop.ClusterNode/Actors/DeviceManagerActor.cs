@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Akka.Actor;
+using Akka.Event;
 using Axxes.AkkaDotNet.Workshop.Shared.Messages;
 
 namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Actors;
@@ -19,6 +21,7 @@ public class DeviceManagerActor : ReceiveActor
         {
             var props = DeviceActor.CreateProps(connectDevice.DeviceId);
             deviceActor = Context.ActorOf(props, $"device-{connectDevice.DeviceId}");
+            Context.GetLogger().Info($"Number of children created: {Context.GetChildren().Count()}");
         }
 
         Sender.Tell(new DeviceConnected(connectDevice.DeviceId, deviceActor));

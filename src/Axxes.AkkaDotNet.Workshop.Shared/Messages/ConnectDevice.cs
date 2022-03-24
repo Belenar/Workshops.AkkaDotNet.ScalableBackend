@@ -1,8 +1,9 @@
 ﻿using System;
+using Akka.Routing;
 
 namespace Axxes.AkkaDotNet.Workshop.Shared.Messages;
 
-    public class ConnectDevice
+    public class ConnectDevice : IConsistentHashable
     {
         public Guid DeviceId { get; }
 
@@ -10,4 +11,6 @@ namespace Axxes.AkkaDotNet.Workshop.Shared.Messages;
         {
             DeviceId = deviceId;
         }
+
+        public object ConsistentHashKey => DeviceId;
     }

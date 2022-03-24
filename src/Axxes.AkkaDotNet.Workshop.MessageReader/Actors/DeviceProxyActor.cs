@@ -6,8 +6,6 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader.Actors;
 
 internal class DeviceProxyActor : ReceiveActor, IWithUnboundedStash
 {
-    private const string RemoteSystemAddress = "akka.tcp://WorkshopActorSystem@localhost:8081";
-
     private readonly Guid _deviceId;
     private IActorRef _deviceActor;
 
@@ -47,7 +45,7 @@ internal class DeviceProxyActor : ReceiveActor, IWithUnboundedStash
 
     protected override void PreStart()
     {
-        var deviceManagerAddress = $"{RemoteSystemAddress}/user/devices";
+        var deviceManagerAddress = "/user/devices";
         var deviceManager = Context.ActorSelection(deviceManagerAddress);
 
         deviceManager.Tell(new ConnectDevice(_deviceId));

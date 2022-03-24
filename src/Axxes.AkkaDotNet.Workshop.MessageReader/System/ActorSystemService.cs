@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Akka.Actor;
 using Akka.Configuration;
+using Akka.Routing;
 using Axxes.AkkaDotNet.Workshop.MessageReader.Actors;
 using Axxes.AkkaDotNet.Workshop.Shared.Messages;
 
@@ -20,6 +21,9 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader.System
             var name = config.GetConfig("system-settings").GetString("actorsystem-name");
              
             _system = ActorSystem.Create(name, config);
+
+            var routerProps = Props.Empty.WithRouter(FromConfig.Instance);
+            _system.ActorOf(routerProps, "devices");
         }
 
         public void SendMeasurement(Guid deviceId, MeterReadingReceived message)
