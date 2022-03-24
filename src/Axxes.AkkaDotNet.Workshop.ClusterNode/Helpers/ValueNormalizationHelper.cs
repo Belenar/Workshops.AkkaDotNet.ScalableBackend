@@ -33,7 +33,7 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Helpers
             SetLastReading(currentTime, currentReading);
         }
 
-        private void SetReferenceReading(DateTime referenceTime, decimal referenceReading)
+        public void SetReferenceReading(DateTime referenceTime, decimal referenceReading)
         {
             _referenceBucket = referenceTime.BucketNumber();
             _referenceReading = referenceReading;

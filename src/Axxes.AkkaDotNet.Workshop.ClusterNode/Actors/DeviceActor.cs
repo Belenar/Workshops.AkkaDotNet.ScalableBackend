@@ -15,6 +15,7 @@ internal class DeviceActor : ReceiveActor
         _deviceId = deviceId;
         Receive<MeterReadingReceived>(HandleMeterReadingReceived);
         Receive<NormalizedMeterReading>(HandleNormalizedMeterReadingReceived);
+        Receive<RequestLastNormalizedReadings>(HandleRequestLastNormalizedReadings);
         CreateChildren();
     }
 
@@ -24,7 +25,7 @@ internal class DeviceActor : ReceiveActor
         var normalizationProps = ValueNormalizationActor.CreateProps();
         Context.ActorOf(normalizationProps, ValueNormalizationName);
 
-        // value-normalization
+        // value-storage
         var storageProps = ValueStorageActor.CreateProps(_deviceId);
         Context.ActorOf(storageProps, ValueStorageName);
     }
@@ -35,6 +36,11 @@ internal class DeviceActor : ReceiveActor
     }
 
     private void HandleNormalizedMeterReadingReceived(NormalizedMeterReading message)
+    {
+        Context.Child(ValueStorageName).Forward(message);
+    }
+
+    private void HandleRequestLastNormalizedReadings(RequestLastNormalizedReadings message)
     {
         Context.Child(ValueStorageName).Forward(message);
     }
