@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Akka.Actor;
 using Akka.Persistence;
 using Axxes.AkkaDotNet.Workshop.ClusterNode.State;
@@ -25,6 +26,7 @@ internal class ValueStorageActor : ReceivePersistentActor
         Command<TakeHourlySnapshot>(WriteHourlyData);
         Command<RequestLastNormalizedReadings>(HandleRequestLastNormalizedReadings);
         Command<WrittenReadingsToDatabase>(HandleWrittenReadingsToDatabase);
+        Command<QueryMeasurementsData>(HandleQueryMeasurementsData);
 
         Context.ActorOf(ReadingDbWriterActor.CreateProps(deviceId), DbWriterName);
 
@@ -34,6 +36,12 @@ internal class ValueStorageActor : ReceivePersistentActor
             Self,
             new TakeHourlySnapshot(),
             Self);
+    }
+
+    private void HandleQueryMeasurementsData(QueryMeasurementsData obj)
+    {
+        // TODO: this only fetches the current state. This code should be moved to a proper query actor
+        Sender.Tell(new MeasurementData(_state.Items.Select(i => i.Reading).ToImmutableArray()));
     }
 
     private void RestoreSnapshot(SnapshotOffer offer)

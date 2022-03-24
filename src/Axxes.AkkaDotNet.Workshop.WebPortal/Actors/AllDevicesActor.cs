@@ -18,6 +18,7 @@ namespace Axxes.AkkaDotNet.Workshop.WebPortal.Actors
             _broadcastRouter = broadcastRouter;
             Receive<AllDeviceIds>(HandleAllDeviceIds);
             Receive<GetAllDeviceIds>(HandleGetAllDeviceIds);
+            Receive<ConnectDevice>(HandleConnectDevice);
             Receive<ClusterEvent.MemberUp>(
                 message => message.Member.Address == _cluster.SelfAddress,
                 HandleMemberUp);
@@ -45,6 +46,14 @@ namespace Axxes.AkkaDotNet.Workshop.WebPortal.Actors
         private void HandleGetAllDeviceIds(GetAllDeviceIds obj)
         {
             Sender.Tell(new AllDeviceIds(_managerForDevices.Keys.ToImmutableArray()));
+        }
+
+        private void HandleConnectDevice(ConnectDevice message)
+        {
+            if (_managerForDevices.ContainsKey(message.DeviceId))
+            {
+                _managerForDevices[message.DeviceId].Forward(message);
+            }
         }
 
         public static Props CreateProps(IActorRef broadcastRouter)

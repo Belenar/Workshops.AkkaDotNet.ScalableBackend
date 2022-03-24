@@ -16,6 +16,7 @@ internal class DeviceActor : ReceiveActor
         Receive<MeterReadingReceived>(HandleMeterReadingReceived);
         Receive<NormalizedMeterReading>(HandleNormalizedMeterReadingReceived);
         Receive<RequestLastNormalizedReadings>(HandleRequestLastNormalizedReadings);
+        Receive<QueryMeasurementsData>(msg => Context.Child(ValueStorageName).Forward(msg));
         CreateChildren();
     }
 

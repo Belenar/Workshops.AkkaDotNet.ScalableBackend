@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Axxes.AkkaDotNet.Workshop.WebPortal.Models;
 using Axxes.AkkaDotNet.Workshop.WebPortal.System;
 using Microsoft.AspNetCore.Mvc;
@@ -24,10 +25,10 @@ namespace Axxes.AkkaDotNet.Workshop.WebPortal.Controllers
         /// <returns>24 hours of measurements in 5 minute buckets.</returns>
         [HttpGet]
         [Route("{deviceId}/{fromDateTimeUtc}")]
-        public IEnumerable<Measurement> Get([FromRoute] Guid deviceId, [FromRoute] DateTime fromDateTimeUtc)
+        public async Task<IEnumerable<Measurement>> Get([FromRoute] Guid deviceId, [FromRoute] DateTime fromDateTimeUtc)
         {
             var toDateTimeUtc = fromDateTimeUtc.AddDays(1);
-            return _actorSystem.GetMeasurements(deviceId, fromDateTimeUtc, toDateTimeUtc);
+            return await _actorSystem.GetMeasurements(deviceId, fromDateTimeUtc, toDateTimeUtc);
         }
     }
 }

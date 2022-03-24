@@ -31,10 +31,19 @@ namespace Axxes.AkkaDotNet.Workshop.WebPortal.System
             _allDevices = _system.ActorOf(AllDevicesActor.CreateProps(broadcastRouter), "all-devices");
         }
 
-        public IEnumerable<Measurement> GetMeasurements(Guid deviceId, in DateTime fromDateTimeUtc, in DateTime toDateTimeUtc)
+        public async Task<IEnumerable<Measurement>> GetMeasurements(Guid deviceId, DateTime fromDateTimeUtc, DateTime toDateTimeUtc)
         {
-            // TODO: fetch the data from the ActorSystem
-            throw new NotImplementedException();
+            var queryProps = MeasurementQueryActor.CreateProps(_allDevices, deviceId);
+
+            var queryActor = _system.ActorOf(queryProps);
+            var measurements = await queryActor.Ask<MeasurementData>(new QueryMeasurementsData(fromDateTimeUtc, toDateTimeUtc));
+
+            return measurements.Readings.Select(m => new Measurement
+            {
+                Consumption = m.Consumption,
+                Reading = m.MeterReading,
+                TimestampUtc = m.Timestamp
+            });
         }
 
         public async Task<IEnumerable<Device>> GetAllDevices()
