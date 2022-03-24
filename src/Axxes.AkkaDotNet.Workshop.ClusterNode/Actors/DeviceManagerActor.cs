@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Akka.Actor;
 using Akka.Event;
@@ -8,9 +10,12 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Actors;
 
 public class DeviceManagerActor : ReceiveActor
 {
+    private readonly List<Guid> _managedDevices = new();
+
     public DeviceManagerActor()
     {
         Receive<ConnectDevice>(ConnectNewDevice);
+        Receive<GetAllDeviceIds>(HandleGetAllDeviceIds);
     }
 
     private void ConnectNewDevice(ConnectDevice connectDevice)
@@ -22,9 +27,15 @@ public class DeviceManagerActor : ReceiveActor
             var props = DeviceActor.CreateProps(connectDevice.DeviceId);
             deviceActor = Context.ActorOf(props, $"device-{connectDevice.DeviceId}");
             Context.GetLogger().Info($"Number of children created: {Context.GetChildren().Count()}");
+            _managedDevices.Add(connectDevice.DeviceId);
         }
 
         Sender.Tell(new DeviceConnected(connectDevice.DeviceId, deviceActor));
+    }
+
+    private void HandleGetAllDeviceIds(GetAllDeviceIds obj)
+    {
+        Sender.Tell(new AllDeviceIds(_managedDevices.ToImmutableArray()));
     }
 
     protected override SupervisorStrategy SupervisorStrategy()

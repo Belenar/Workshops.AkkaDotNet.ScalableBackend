@@ -1,7 +1,40 @@
 system-settings {
-  actorsystem-name: "WorkshopActorSystem"
+	actorsystem-name = "WorkshopActorSystem"
 }
 
-akka {  
-    stdout-loglevel = DEBUG
+akka {
+	loggers = ["Akka.Event.StandardOutLogger"]
+	stdout-loglevel = INFO
+	loglevel = INFO
+
+	actor {
+        provider = cluster
+        deployment {
+          /device-broadcast {
+             router = broadcast-group
+             routees.paths = ["/user/devices"]
+             cluster {
+                 enabled = on
+                 max-nr-of-instances-per-node = 1
+                 allow-local-routees = off
+                 use-role = devicenode
+             }
+          }
+       }
+    }
+
+    remote {
+        dot-netty.tcp {
+            transport-class = "Akka.Remote.Transport.DotNetty.TcpTransport, Akka.Remote"
+            transport-protocol = tcp
+            applied-adapters = []
+            port = 0
+            hostname = localhost
+        }
+    }
+
+    cluster {
+        seed-nodes = ["akka.tcp://WorkshopActorSystem@localhost:8202"]
+        roles = [webportal]
+    }
 }

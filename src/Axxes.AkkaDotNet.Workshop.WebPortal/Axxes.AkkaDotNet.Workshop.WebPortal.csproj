@@ -9,6 +9,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Axxes.AkkaDotNet.Workshop.Shared\Axxes.AkkaDotNet.Workshop.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="akka.hocon">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
