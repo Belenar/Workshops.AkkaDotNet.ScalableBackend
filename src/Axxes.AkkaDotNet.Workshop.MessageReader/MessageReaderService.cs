@@ -45,6 +45,7 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader
 
                 _eventHubClient.ProcessEventAsync += ProcessEventAsync;
                 _eventHubClient.ProcessErrorAsync += ProcessErrorAsync;
+                _eventHubClient.PartitionInitializingAsync += PartitionInitialization;
 
                 await _eventHubClient.StartProcessingAsync(stoppingToken);
             }
@@ -52,6 +53,12 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader
             {
                 _logger.LogError(e.Message);
             }
+        }
+
+        private Task PartitionInitialization(PartitionInitializingEventArgs arg)
+        {
+            arg.DefaultStartingPosition = EventPosition.Earliest;
+            return Task.CompletedTask;
         }
 
         private async Task<BlobContainerClient> CreateBlobContainerClient()
