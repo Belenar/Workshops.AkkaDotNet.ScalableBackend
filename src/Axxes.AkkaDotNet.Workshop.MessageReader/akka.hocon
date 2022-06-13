@@ -1,7 +1,16 @@
 system-settings {
-  actorsystem-name: "WorkshopActorSystem"
+    system-name: "WorkshopSystem"
 }
 
 akka {  
     stdout-loglevel = DEBUG
+    actor {
+        provider = remote
+    }
+    remote {
+        dot-netty.tcp {
+            port = 0
+            hostname = localhost
+        }
+    }
 }
