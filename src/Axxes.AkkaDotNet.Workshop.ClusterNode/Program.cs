@@ -1,3 +1,5 @@
+using Axxes.AkkaDotNet.Workshop.ClusterNode.Helpers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -14,7 +16,8 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-
+                    DatabaseConnectionFactory.HistoryConnectionString =
+                        hostContext.Configuration.GetConnectionString("HistoryConnectionString");
                     services.AddHostedService<ClusterNodeService>();
                 });
     }

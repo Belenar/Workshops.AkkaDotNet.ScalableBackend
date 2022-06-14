@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Immutable;
+using System.Linq;
 using Akka.Actor;
 using Akka.Persistence;
 using Axxes.AkkaDotNet.Workshop.ClusterNode.State;
@@ -19,9 +21,16 @@ public class HotStorageActor : ReceivePersistentActor
         
         Command<NormalizedMeterReading>(msg => Persist(msg, HandleNewMeterReading));
         Recover<NormalizedMeterReading>(HandleNewMeterReading);
-        Command<TakeHourlySnapshot>(_ => SaveSnapshot(_state));
+        Command<WrittenReadingsToDatabase>(msg => Persist(msg, m => _state.SetSavedUntil(m.WrittenToDate)));
+
+        Command<TakeHourlySnapshot>(HandleSnapshot);
+        Command<SaveSnapshotSuccess>(_ => { });
+        Command<SaveSnapshotFailure>(_ => { });
         Recover<SnapshotOffer>(offer => { _state = (NormalizedReadingPersistenceState)offer.Snapshot; });
 
+
+        var coldStorageProps = ColdStorageActor.CreateProps(deviceId);
+        Context.ActorOf(coldStorageProps, "historic-storage");
     }
 
     private void ScheduleSnapshots()
@@ -41,6 +50,15 @@ public class HotStorageActor : ReceivePersistentActor
     private void HandleNewMeterReading(NormalizedMeterReading reading)
     {
         _state.Add(reading);
+    }
+
+    private void HandleSnapshot(TakeHourlySnapshot obj)
+    {
+        _state.Truncate();
+        SaveSnapshot(_state);
+        var unsavedReadings = _state.GetUnsavedItems().ToImmutableArray();
+        if(unsavedReadings.Any())
+            Context.Child("historic-storage").Tell(new WriteReadingsToDatabase(unsavedReadings));
     }
 
     public static Props CreateProps(Guid deviceId)
