@@ -7,19 +7,19 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader.Actors;
 public class DeviceProxyActor : ReceiveActor, IWithUnboundedStash
 {
     private readonly Guid _deviceId;
+    private readonly IActorRef _deviceManager;
     private IActorRef _deviceActor;
 
-    public DeviceProxyActor(Guid deviceId)
+    public DeviceProxyActor(Guid deviceId, IActorRef deviceManager)
     {
         _deviceId = deviceId;
+        _deviceManager = deviceManager;
         Become(Started);
     }
 
     protected override void PreStart()
     {
-        var deviceManager =
-            Context.ActorSelection("akka.tcp://WorkshopSystem@localhost:8081/user/device-manager");
-        deviceManager.Tell(new ConnectDevice(_deviceId));
+        _deviceManager.Tell(new ConnectDevice(_deviceId));
     }
 
     private void Started()
@@ -50,9 +50,9 @@ public class DeviceProxyActor : ReceiveActor, IWithUnboundedStash
         _deviceActor.Tell(message);
     }
 
-    public static Props CreateProps(Guid deviceId)
+    public static Props CreateProps(Guid deviceId, IActorRef deviceManager)
     {
-        return Props.Create<DeviceProxyActor>(deviceId);
+        return Props.Create<DeviceProxyActor>(deviceId, deviceManager);
     }
 
     public IStash Stash { get; set; }
