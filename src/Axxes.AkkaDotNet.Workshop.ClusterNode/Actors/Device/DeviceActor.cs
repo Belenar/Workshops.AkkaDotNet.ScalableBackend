@@ -16,6 +16,7 @@ public class DeviceActor : ReceiveActor
         CreateChildren();
         Receive<MeterReadingReceived>(_normalizationActor.Forward);
         Receive<NormalizedMeterReading>(DistributeNormalizedReadings);
+        Receive<RequestLastNormalizedReadings>(_storageActor.Forward);
     }
 
     private void DistributeNormalizedReadings(NormalizedMeterReading reading)

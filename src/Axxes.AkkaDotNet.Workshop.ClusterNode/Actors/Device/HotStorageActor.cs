@@ -28,6 +28,7 @@ public class HotStorageActor : ReceivePersistentActor
         Command<SaveSnapshotFailure>(_ => { });
         Recover<SnapshotOffer>(offer => { _state = (NormalizedReadingPersistenceState)offer.Snapshot; });
 
+        Command<RequestLastNormalizedReadings>(ReturnNormalizedReadings);
 
         var coldStorageProps = ColdStorageActor.CreateProps(deviceId);
         Context.ActorOf(coldStorageProps, "historic-storage");
@@ -50,6 +51,12 @@ public class HotStorageActor : ReceivePersistentActor
     private void HandleNewMeterReading(NormalizedMeterReading reading)
     {
         _state.Add(reading);
+    }
+
+    private void ReturnNormalizedReadings(RequestLastNormalizedReadings request)
+    {
+        var lastReadings = _state.GetLastReadings(request.NumberOfReadings);
+        Sender.Tell(new ReturnLastNormalizedReadings(lastReadings.ToImmutableArray()));
     }
 
     private void HandleSnapshot(TakeHourlySnapshot obj)
