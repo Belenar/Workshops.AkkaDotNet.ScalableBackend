@@ -4,7 +4,7 @@ using Axxes.AkkaDotNet.Workshop.Shared.Messages;
 
 namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Actors;
 
-internal class DeviceManagerActor : ReceiveActor
+public class DeviceManagerActor : ReceiveActor
 {
     // private int _numberOfDeviceActors = 0;
 
