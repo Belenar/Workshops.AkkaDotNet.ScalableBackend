@@ -6,6 +6,8 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Actors;
 
 internal class DeviceManagerActor : ReceiveActor
 {
+    // private int _numberOfDeviceActors = 0;
+
     public DeviceManagerActor()
     {
         Receive<ConnectDevice>(HandleConnectDevice);
@@ -22,6 +24,8 @@ internal class DeviceManagerActor : ReceiveActor
         {
             var deviceProps = DeviceActor.CreateProps(deviceId);
             childActor = Context.ActorOf(deviceProps, actorName);
+            // _numberOfDeviceActors++;
+            // Context.GetLogger().Debug($"Device actors created: {_numberOfDeviceActors}");
         }
         
         Sender.Tell(new DeviceConnected(deviceId, childActor));
