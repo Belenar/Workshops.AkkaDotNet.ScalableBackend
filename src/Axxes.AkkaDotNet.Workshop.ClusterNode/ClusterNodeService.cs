@@ -49,7 +49,6 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode
             // TODO: Create base actors and send some messages to them
             while (!stoppingToken.IsCancellationRequested)
             {
-                var connected = await _deviceManager.Ask<DeviceConnected>(new ConnectDevice(Guid.NewGuid()));
                 //_logger.LogInformation("SeedNodeService running at: {time}", DateTimeOffset.Now);
                 await Task.Delay(1000, stoppingToken);
             }

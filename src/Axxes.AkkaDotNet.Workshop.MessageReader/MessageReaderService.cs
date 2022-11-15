@@ -65,6 +65,8 @@ namespace Axxes.AkkaDotNet.Workshop.MessageReader
         {
             var blobClient = new BlobServiceClient(_iotHubSettings.BlobStorageConnectionString);
 
+            // NEVER DO THIS IN PRODUCTION CODE.
+            // This makes sure we always start from a fresh pointer.
             var containerName = $"checkpoint-{Guid.NewGuid()}";
 
             try

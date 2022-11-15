@@ -1,6 +1,7 @@
 ﻿using System;
 using Akka.Actor;
 using Akka.Event;
+using Axxes.AkkaDotNet.Workshop.Shared.Messages;
 
 namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Actors.Device;
 
@@ -11,7 +12,12 @@ internal class DeviceActor : ReceiveActor
     public DeviceActor(Guid deviceId)
     {
         _deviceId = deviceId;
-        Context.GetLogger().Debug($"Device Actor for device {_deviceId} was created");
+        Receive<MeterReadingReceived>(HandleMeterReading);
+    }
+
+    private void HandleMeterReading(MeterReadingReceived obj)
+    {
+        Context.GetLogger().Debug($"Meter reading received: {obj.MeterReading}");
     }
 
     public static Props CreateProps(Guid deviceId)

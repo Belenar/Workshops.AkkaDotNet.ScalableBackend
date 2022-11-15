@@ -3,5 +3,17 @@ system-settings {
 }
 
 akka {  
+    loggers = ["Akka.Event.StandardOutLogger"]
     stdout-loglevel = DEBUG
+    loglevel = DEBUG
+
+    actor {
+        provider = remote
+    }
+    remote {
+         dot-netty.tcp {
+            port = 0 #bound to a random port
+            hostname = localhost
+        }
+    }
 }
