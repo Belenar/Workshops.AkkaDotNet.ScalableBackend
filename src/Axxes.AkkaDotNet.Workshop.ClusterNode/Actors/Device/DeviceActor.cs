@@ -7,17 +7,31 @@ namespace Axxes.AkkaDotNet.Workshop.ClusterNode.Actors.Device;
 
 internal class DeviceActor : ReceiveActor
 {
+    private const string NormalizationActorName = "value-normalization";
     private readonly Guid _deviceId;
 
     public DeviceActor(Guid deviceId)
     {
         _deviceId = deviceId;
+        CreateChildren();
         Receive<MeterReadingReceived>(HandleMeterReading);
+        Receive<NormalizedMeterReading>(HandleNormalizedReading);
     }
 
-    private void HandleMeterReading(MeterReadingReceived obj)
+    private void CreateChildren()
     {
-        Context.GetLogger().Debug($"Meter reading received: {obj.MeterReading}");
+        var normalizationProps = ValueNormalizationActor.CreateProps();
+        Context.ActorOf(normalizationProps, NormalizationActorName);
+    }
+
+    private void HandleMeterReading(MeterReadingReceived reading)
+    {
+        Context.Child(NormalizationActorName).Tell(reading);
+    }
+
+    private void HandleNormalizedReading(NormalizedMeterReading obj)
+    {
+        Context.GetLogger().Debug($"Normalized reading received: {obj.MeterReading}");
     }
 
     public static Props CreateProps(Guid deviceId)

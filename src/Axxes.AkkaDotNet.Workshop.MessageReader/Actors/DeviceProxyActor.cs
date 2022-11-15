@@ -4,7 +4,7 @@ using Axxes.AkkaDotNet.Workshop.Shared.Messages;
 
 namespace Axxes.AkkaDotNet.Workshop.MessageReader.Actors;
 
-internal class DeviceProxyActor : ReceiveActor
+internal class DeviceProxyActor : ReceiveActor, IWithUnboundedStash
 {
     private readonly Guid _deviceId;
     private IActorRef _deviceActor;
@@ -12,13 +12,25 @@ internal class DeviceProxyActor : ReceiveActor
     public DeviceProxyActor(Guid deviceId)
     {
         _deviceId = deviceId;
-        Receive<MeterReadingReceived>(ForwardMeterReading);
+        Become(Started);
+    }
+
+    private void Started()
+    {
         Receive<DeviceConnected>(HandleDeviceConnected);
+        Receive<MeterReadingReceived>(StashMeterReading);
+    }
+
+    private void Initialized()
+    {
+        Receive<MeterReadingReceived>(ForwardMeterReading);
     }
 
     private void HandleDeviceConnected(DeviceConnected deviceConnected)
     {
         _deviceActor = deviceConnected.DeviceActor;
+        Become(Initialized);
+        Stash.UnstashAll();
     }
 
     protected override void PreStart()
@@ -30,12 +42,19 @@ internal class DeviceProxyActor : ReceiveActor
 
     private void ForwardMeterReading(MeterReadingReceived meterReading)
     {
-        _deviceActor?.Tell(meterReading);
+        _deviceActor.Tell(meterReading);
+    }
+
+    private void StashMeterReading(MeterReadingReceived meterReading)
+    {
+        Stash.Stash();
     }
 
     public static Props CreateProps(Guid deviceId)
     {
         return Props.Create<DeviceProxyActor>(deviceId);
     }
+
+    public IStash Stash { get; set; }
 }
 
