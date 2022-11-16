@@ -18,6 +18,7 @@ internal class DeviceActor : ReceiveActor
         CreateChildren();
         Receive<MeterReadingReceived>(HandleMeterReading);
         Receive<NormalizedMeterReading>(HandleNormalizedReading);
+        Receive<RequestLastNormalizedReadings>(Context.Child(StorageActorName).Forward);
     }
 
     private void CreateChildren()

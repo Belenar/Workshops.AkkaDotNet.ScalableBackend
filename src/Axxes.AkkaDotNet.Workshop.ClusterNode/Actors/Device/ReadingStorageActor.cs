@@ -34,6 +34,10 @@ internal class ReadingStorageActor : ReceivePersistentActor
         Command<WriteHourlyReadings>(_ => WriteReadingsToColdStorage());
         Command<RequestLastNormalizedReadings>(HandleRequestLastNormalizedReading);
 
+        // Gets rid of dead letters
+        Command<SaveSnapshotFailure>(_ => { });
+        Command<SaveSnapshotSuccess>(_ => { });
+
         ScheduleSnapshots();
     }
 
