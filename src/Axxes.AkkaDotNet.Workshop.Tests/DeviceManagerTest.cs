@@ -7,8 +7,6 @@ namespace Axxes.AkkaDotNet.Workshop.Tests
 {
     public class DeviceManagerTest : TestKit
     {
-        private TimeSpan EpsilonValueForWithins => new TimeSpan(0, 0, 1); // https://github.com/akkadotnet/akka.net/issues/2130
-
         [Fact]
         public void WhenConnectIsSent_ThenChildIsCreated()
         {
