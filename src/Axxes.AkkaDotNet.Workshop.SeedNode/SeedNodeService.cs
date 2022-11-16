@@ -19,8 +19,6 @@ namespace Axxes.AkkaDotNet.Workshop.SeedNode
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            // TODO: create actor system
-
             _system = SeedNodeSystemFactory.CreateActorSystem();
             await base.StartAsync(cancellationToken);
         }

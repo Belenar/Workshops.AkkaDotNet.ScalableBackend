@@ -9,12 +9,14 @@ internal class DeviceProxyActor : ReceiveActor, IWithUnboundedStash
     public record RetryConnect;
 
     private readonly Guid _deviceId;
+    private readonly IActorRef _deviceManagerRouter;
     private IActorRef _deviceActor;
     private Cancelable _cancelRetries;
 
-    public DeviceProxyActor(Guid deviceId)
+    public DeviceProxyActor(Guid deviceId, IActorRef deviceManagerRouter)
     {
         _deviceId = deviceId;
+        _deviceManagerRouter = deviceManagerRouter;
         Become(Started);
     }
 
@@ -60,9 +62,7 @@ internal class DeviceProxyActor : ReceiveActor, IWithUnboundedStash
         if (_deviceActor != null)
             return;
 
-        // Don't use hardcoded strings in PROD!
-        var selection = Context.ActorSelection("akka.tcp://WorkshopActorSystem@localhost:8081/user/device-manager");
-        selection.Tell(new ConnectDevice(_deviceId));
+        _deviceManagerRouter.Tell(new ConnectDevice(_deviceId));
     }
 
     private void ForwardMeterReading(MeterReadingReceived meterReading)
@@ -75,9 +75,9 @@ internal class DeviceProxyActor : ReceiveActor, IWithUnboundedStash
         Stash.Stash();
     }
 
-    public static Props CreateProps(Guid deviceId)
+    public static Props CreateProps(Guid deviceId, IActorRef deviceManagerRouter)
     {
-        return Props.Create<DeviceProxyActor>(deviceId);
+        return Props.Create<DeviceProxyActor>(deviceId, deviceManagerRouter);
     }
 
     public IStash Stash { get; set; }
