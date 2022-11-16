@@ -1,6 +1,9 @@
 ﻿using System.IO;
 using Akka.Actor;
 using Akka.Configuration;
+using Petabridge.Cmd.Cluster;
+using Petabridge.Cmd.Host;
+using Petabridge.Cmd.Remote;
 
 namespace Axxes.AkkaDotNet.Workshop.SeedNode.System
 {
@@ -15,7 +18,14 @@ namespace Axxes.AkkaDotNet.Workshop.SeedNode.System
             var seedNodeConfig = clusterConfig.GetConfig("system-settings");
             var actorSystemName = seedNodeConfig.GetString("actorsystem-name");
 
-            return ActorSystem.Create(actorSystemName, clusterConfig);
+            var actorsystem = ActorSystem.Create(actorSystemName, clusterConfig);
+
+            var cmd = PetabridgeCmd.Get(actorsystem);
+            cmd.RegisterCommandPalette(ClusterCommands.Instance);
+            cmd.RegisterCommandPalette(new RemoteCommands());
+            cmd.Start();
+
+            return actorsystem;
         }
     }
 }
